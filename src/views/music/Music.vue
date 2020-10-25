@@ -7,7 +7,7 @@
       <input type="text" v-model="searchName">
       <button @click="search(searchName)">搜索</button>
     </div>
-    <div v-for="item in musicList" class="list">
+    <div v-for='(item,index) in musicList' :key="index" class="list">
       {{item.name}}
       <button class="play"  @click="play(item)">播放</button>
     </div>
