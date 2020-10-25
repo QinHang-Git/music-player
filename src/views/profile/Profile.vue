@@ -11,15 +11,16 @@ export default {
   components: {},
   data:function () {
     return {
-      
+
     }
   },
   computed: {},
   watch: {},
   methods: {},
+
 }
 </script>
 
 <style scoped>
-  
+
 </style>

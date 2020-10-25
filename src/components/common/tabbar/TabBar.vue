@@ -9,16 +9,15 @@ export default {
   name:'TabBar',
   data(){
     return{
-      
+
     }
   }
 
 }
 </script>
 
- 
+
 <style>
-  
   #tab-bar{
     display: flex;
     background-color: burlywood;
