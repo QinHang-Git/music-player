@@ -1,6 +1,6 @@
 <!--  -->
 <template>
-  <div id=''>
+  <div id='main-tab-bar'>
     <tab-bar>
       <tab-bar-item path="/home" activeColor="yellow">
         <img slot="item-icon" src="~assets/img/tabbar/home.svg" alt="">
@@ -46,6 +46,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

@@ -5,9 +5,19 @@ const Home = () => import('views/home/Home.vue')
 const Music = () => import('views/music/Music')
 const Profile = () => import('views/profile/Profile')
 const Shopcart = () => import('views/shopcart/Shopcart')
+const Detail = () => import('views/detail/Detail')
 
 
 Vue.use(VueRouter)
+
+// const originalPush = VueRouter.prototype.push
+
+// VueRouter.prototype.push = function push (location) {
+
+// return originalPush.call(this, location).catch(err => err)
+
+// }
+
 
 const routes = [
   {
@@ -29,11 +39,15 @@ const routes = [
   {
     path:'/profile',
     component:Profile
+  },
+  {
+    path:'/detail/:itemId',
+    component:Detail
   }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
