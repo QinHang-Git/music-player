@@ -1,154 +1,114 @@
 <!--  -->
 <template>
-  <div>
-    <div id='content'>
-      <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-        <li>6</li>
-        <li>7</li>
-        <li>8</li>
-        <li>9</li>
-        <li>10</li>
-        <li>11</li>
-        <li>12</li>
-        <li>13</li>
-        <li>14</li>
-        <li>15</li>
-        <li>16</li>
-        <li>17</li>
-        <li>18</li>
-        <li>19</li>
-        <li>20</li>
-        <li>21</li>
-        <li>22</li>
-        <li>23</li>
-        <li>24</li>
-        <li>25</li>
-        <li>26</li>
-        <li>27</li>
-        <li>28</li>
-        <li>29</li>
-        <li>30</li>
-        <li>31</li>
-        <li>32</li>
-        <li>33</li>
-        <li>34</li>
-        <li>35</li>
-        <li>36</li>
-        <li>37</li>
-        <li>38</li>
-        <li>39</li>
-        <li>40</li>
-        <li>41</li>
-        <li>42</li>
-        <li>43</li>
-        <li>44</li>
-        <li>45</li>
-        <li>46</li>
-        <li>47</li>
-        <li>48</li>
-        <li>49</li>
-        <li>50</li>
-        <li>51</li>
-        <li>52</li>
-        <li>53</li>
-        <li>54</li>
-        <li>55</li>
-        <li>56</li>
-        <li>57</li>
-        <li>58</li>
-        <li>59</li>
-        <li>60</li>
-        <li>61</li>
-        <li>62</li>
-        <li>63</li>
-        <li>64</li>
-        <li>65</li>
-        <li>66</li>
-        <li>67</li>
-        <li>68</li>
-        <li>69</li>
-        <li>70</li>
-        <li>71</li>
-        <li>72</li>
-        <li>73</li>
-        <li>74</li>
-        <li>75</li>
-        <li>76</li>
-        <li>77</li>
-        <li>78</li>
-        <li>79</li>
-        <li>80</li>
-        <li>81</li>
-        <li>82</li>
-        <li>83</li>
-        <li>84</li>
-        <li>85</li>
-        <li>86</li>
-        <li>87</li>
-        <li>88</li>
-        <li>89</li>
-        <li>90</li>
-        <li>91</li>
-        <li>92</li>
-        <li>93</li>
-        <li>94</li>
-        <li>95</li>
-        <li>96</li>
-        <li>97</li>
-        <li>98</li>
-        <li>99</li>
-        <li>100</li>
-      </ul>
+  <div id="pro-file">
+    <nav-bar class="nav-bar"><div slot="center">个人简历</div></nav-bar>
+    <div class="scroll" ref="scroll">
+      <div class="head-show">
+        <profile-main :isShowMain="isShowMain"></profile-main>
+        <tab-control
+          class="tab-control"
+          :titles="['自我介绍', '项目介绍', '小荣誉']"
+          @tabClick="tabClick"
+        ></tab-control>
+      </div>
+      <router-view class="profile-view"></router-view>
     </div>
-
   </div>
 </template>
 
 <script>
-import BScroll from "better-scroll"
-export default {
+import Toast from "components/common/toast/Toast";
+import NavBar from "components/common/navbar/Navbar";
+import TabControl from "components/content/tabControl/TabControl";
 
-  name:"Profile",
-  components: {},
-  data:function () {
+import ProfileMain from "./childComps/ProfileMain";
+
+export default {
+  name: "Profile",
+  components: {
+    Toast,
+    NavBar,
+    ProfileMain,
+    TabControl,
+  },
+  data: function () {
     return {
-      scroll:null
-    }
+      message: "hahahha ",
+      isShowMain: true,
+    };
   },
   computed: {},
   watch: {},
   methods: {
-
+    showMain() {
+      if (this.$refs.scroll.scrollTop > 170) {
+        this.isShowMain = false;
+      }
+      if (this.$refs.scroll.scrollTop < 10) {
+        this.isShowMain = true;
+      }
+    },
+    tabClick(index) {
+      console.log(index);
+      switch (index) {
+        case 0:
+          this.$router.replace("/profile/profileIntro");
+          break;
+        case 1:
+          this.$router.replace("/profile/profileProject");
+          break;
+        case 2:
+          this.$router.replace("/profile/profileHonour");
+          break;
+        // case 3:
+        //   this.$router.replace("/profile/profileHonour");
+        //   break;
+        default:
+          break;
+      }
+    },
   },
-  mounted(){
-    this.scroll = new BScroll('#content',{
-      probeType:3,
-      pullUpLoad:true
-    })
-    // this.scroll.on('scroll',(position)=>{
-    //   console.log(position)
-    // })
-    this.scroll.on('pullingUp',()=>{
-      setTimeout(() => {
-        console.log("shang")
-        this.scroll.finishPullUp()
-      }, 2000);
-
-    })
-  }
-
-}
+  mounted() {
+    var scroll = this.$refs.scroll;
+    scroll.addEventListener("scroll", this.showMain, false);
+  },
+};
 </script>
 
 <style scoped>
-  #content{
-    height: 200px;
-    background-color: #fff;
-    overflow: hidden;
-  }
+#pro-file {
+  width: 100vw;
+}
+.nav-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: -1;
+}
+
+.head-show {
+  min-width: 320px;
+  max-width: 640px;
+  width: 100%;
+  z-index: 2;
+  position: sticky;
+  top: 0;
+}
+
+.profile-view {
+  min-width: 320px;
+  max-width: 640px;
+  width: 100%;
+
+}
+
+.scroll {
+  min-width: 320px;
+  max-width: 640px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  height:calc(100vh - 49px);
+  overflow: auto;
+}
 </style>

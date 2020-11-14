@@ -1,6 +1,6 @@
 import {request, shopRequest} from "network/request.js"
 
-export function getOneBuy(page){
+export function getGoodList(page){
   return shopRequest({
     url:"/goods/get-goods-list",
     params:{
@@ -45,6 +45,18 @@ export function getGoodsDetails(goodsId){
       appKey:'5fa0d3a407682',
       goodsId:goodsId,
       version:'v1.2.3'
+    }
+  })
+}
+
+export function getGoodsActivity(){
+  return shopRequest({
+    url:"/category/get-tb-topic-list",
+    params:{
+      appKey:'5fa0d3a407682',
+      pageId:"1",
+      pageSize:10,
+      version:'v1.2.0'
     }
   })
 }

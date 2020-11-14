@@ -2,24 +2,15 @@
 <template>
   <div id=''>
     <div class="goods-describe">
-      <div class="goods-describe1">
-        <div>
-          <p>优惠促销</p>
-          <div class="goods-price">
-          <p class="original-price"><span>￥</span>{{describe.originalPrice}}</p>
-          <p class="actual-price">券后价：￥<span>{{describe.actualPrice}}</span></p>
-          </div>
+        <p>优惠促销</p>
+        <div class="goods-price">
+        <p class="original-price"><span>￥</span>{{describe.originalPrice}}</p>
+        <p class="actual-price">券后价：￥<span>{{describe.actualPrice}}</span></p>
         </div>
-        <a :href="describe.couponLink" class="coupon-price">领取优惠券</a>
-      </div>
-
-
-
       <!-- <a :href="describe.couponLink">领券</a> -->
       <h2>{{describe.title}}</h2>
     </div>
-    <h2>最优方案：{{describe.desc}}</h2>
-    <a :href="describe.itemLink">立即购买</a>
+
   </div>
 </template>
 
@@ -55,10 +46,7 @@ export default {
     padding: 10px;
     overflow: hidden;
   }
-  .goods-describe1{
-    display: flex;
-  }
-  .goods-describe1 > p:first-child{
+  .goods-describe > p:first-child{
     color: red;
     font-size: 12px;
   }
@@ -90,18 +78,4 @@ export default {
   h2{
     font-size: 18px;
   }
-  .coupon-price{
-    flex: 1;
-    margin:5px 10px;
-    display: block;
-    background: url(../../../assets/img/common/coupon.jpg);
-    background-size: 100% 100%;
-    width: 50%;
-    border-radius: 10px;
-    font-size: 20px;
-    color: #fff;
-    line-height: 50px;
-    text-align: center;
-  }
-
 </style>

@@ -33,7 +33,6 @@ export default {
   methods:{
     itemClick(){
       const tag = this.$router.replace(this.path).catch((err)=>{err})
-      console.log(this.path)
     }
   }
 }

@@ -3,20 +3,18 @@
   <div id="home">
     <!-- 导航条 -->
     <nav-bar class="nav-bar"><div slot="center">购物街</div></nav-bar>
-    <scroll
+    <scroll @upLoadMore="upLoadMore" :monitor="true" @scrollTop="contentScroll"
       class="scroll"
-      ref="scroll"
-      :probe-type="3" :pullUpLoad="true"
-      @scroll="contentScroll" @pullingUp="loadMore">
+      ref="scroll">
       <!-- 轮播图  -->
-      <slide-show> </slide-show>
+      <home-slide-show :goodsActivity="goodsActivity"> </home-slide-show>
       <!-- 导航栏 -->
       <!-- <home-nav></home-nav> -->
       <home-lable></home-lable>
       <!-- 分类模块 -->
       <tab-control
         class="tab-control"
-        :titles="['1元购', '热门', '精选']"
+        :titles="['好货', '热门', '精选']"
         @tabClick="tabClick"
       ></tab-control>
       <!-- 商品展示页面 -->
@@ -24,7 +22,7 @@
       <!-- 综合模块 -->
       <!-- <home-cate></home-cate> -->
     </scroll>
-    <back-top class="back-top" @click.native="topClick" v-show="isShowBackTop"></back-top>
+    <back-top class="back-top" @click.native="toTop" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -32,9 +30,9 @@
 import HomeNav from "./childComps/HomeNav";
 import HomeLable from "./childComps/HomeLable";
 import HomeCate from "./childComps/HomeCate";
+import HomeSlideShow from "./childComps/HomeSlideShow";
 
 import NavBar from "components/common/navbar/Navbar";
-import SlideShow from "components/common/slideshow/SlideShow";
 import Scroll from "components/common/scroll/Scroll";
 
 import TabControl from "components/content/tabControl/TabControl";
@@ -43,7 +41,7 @@ import BackTop from "components/content/backtop/BackTop";
 
 
 
-import { getOneBuy, getSell, getPop, getJu } from "network/home.js";
+import { getGoodList, getSell, getPop, getJu, getGoodsActivity} from "network/home.js";
 
 export default {
   name: "Home",
@@ -52,7 +50,7 @@ export default {
     HomeLable,
     HomeCate,
     NavBar,
-    SlideShow,
+    HomeSlideShow,
     TabControl,
     GoodsList,
     Scroll,
@@ -61,24 +59,38 @@ export default {
   data() {
     return {
       goods: {
-        oneBuy: { page: 0, list: [] },
+        goodList: { page: 0, list: [] },
         pop: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
-      currentType: "oneBuy",
-      isShowBackTop:false
+      goodsActivity:[],
+      currentType: "goodList",
+      isShowBackTop:false,
+      saveY:null
+
     };
   },
-  computed: {},
-  watch: {},
+  computed: {
+    scrollTop(){
+      console.log("jianting----scrollTop");
+      return this.$refs.scroll.scrollTop
+    }
+  },
+  watch: {
+    scrollTop(){
+      this.isShowBackTop = (this.$refs.scroll.scrollTop > 1000)
+    }
+  },
   methods: {
-
     // 事件监听方法,监听点击的tab
     tabClick(index) {
       console.log(index);
+      console.log(this.$refs.scroll.scrollTop);
+      if(this.$refs.scroll.scrollTop>500)
+      {this.$refs.scroll.scrollY(500)}
       switch (index) {
         case 0:
-          this.currentType = "oneBuy";
+          this.currentType = "goodList";
           break;
         case 1:
           this.currentType = "pop";
@@ -88,27 +100,22 @@ export default {
       }
     },
     //回到顶部的事件
-    topClick(){
-      console.log("s-----");
-      this.$refs.scroll.scrollTo(0,0)
+    toTop() {
+        this.$refs.scroll.scrollY(0)
+      },
+    // 返回顶部图标是否显示
+    contentScroll(scrollTop){
+      this.isShowBackTop = (scrollTop)>1000
     },
-
-    //返回顶部图标是否显示
-    contentScroll(a){
-      this.isShowBackTop = (-a.y)>1000
-    },
-
-    //上拉加载更多
-    loadMore(){
-      console.log("上拉加载更多");
+    //监听方法，用于滚动位置事件的保存 上拉加载更多
+    upLoadMore(){
       this.getHomeGoods(this.currentType)
     },
-
-
+    // 网络请求方法
     getHomeGoods(type){
       switch(type){
-        case "oneBuy":
-          this.getOneBuy()
+        case "goodList":
+          this.getGoodList()
           break
         case "pop":
           this.getPop()
@@ -117,90 +124,86 @@ export default {
           this.getSell()
       }
     },
-    // 网络请求方法
-    getOneBuy() {
-      const page = this.goods["oneBuy"].page + 1;
-      getOneBuy(page).then((res) => {
-        console.log("京东一元购");
-        console.log(res);
-        this.goods["oneBuy"].list.push(...res.data.list);
-        this.goods["oneBuy"].page += 1;
-        this.$refs.scroll.finishPullUp()
+    getGoodList() {
+      const page = this.goods["goodList"].page + 1;
+      getGoodList(page).then((res) => {
+        this.goods["goodList"].list.push(...res.data.list);
+        this.goods["goodList"].page += 1;
       });
     },
     getSell() {
       const page = this.goods["sell"].page + 1;
       getSell(page).then((res) => {
-        console.log("精选sell");
-        console.log(res);
         this.goods["sell"].list.push(...res.data.list);
         this.goods["sell"].page += 1;
-        this.$refs.scroll.finishPullUp()
       });
     },
     getPop() {
       const page = this.goods["pop"].page + 1;
       getPop(page).then((res) => {
-        console.log("热门pop");
-        console.log(res);
         this.goods["pop"].list.push(...res.data.list);
         this.goods["pop"].page += 1;
-        this.$refs.scroll.finishPullUp()
       });
     },
-    //防抖
-    debounce(func,delay){
-      let timer = null
-      return function(args){
-        if(timer) clearTimeout(timer)
-        timer = setTimeout(() => {
-          func.apply(this,args)
-        }, delay);
-      }
-    }
+    //轮播图使用 请求的数据
+    getGoodsActivity() {
+      getGoodsActivity().then((res)=>{
+        console.log(res);
+        this.goodsActivity = res.data
+        console.log(this.goodsActivity);
+      })
+    },
   },
   created: function () {
-    this.getHomeGoods("oneBuy");
+    this.getHomeGoods("goodList");
     this.getHomeGoods("sell");
     this.getHomeGoods("pop");
-
-
+    this.getGoodsActivity();
   },
   mounted(){
-    const refresh = this.debounce(()=>{
-        this.$refs.scroll.refresh()
-        console.log("刷新")
-        })
-    //监听图片加载情况
-    this.$bus.$on('itemImgLoad',()=>{
-      console.log('监听到了')
-      // this.$refs.scroll.refresh()
-      refresh()
-    })
+  },
+
+  beforeRouteLeave(to, from, next) {
+      this.saveY = this.$refs.scroll.scrollTop; //记录离开页面时的位置
+      next()
+  },
+  activated(){
+    this.$refs.scroll.scrollY(this.saveY)
   }
 };
 </script>
 
-<style>
+<style scoped>
 #home{
   height: 100vh;
   position: relative;
+  min-width: 320px;
+  max-width: 640px;
+}
+.nav-bar{
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 .tab-control {
-  z-index: 998;
+  z-index: 2;
   position: sticky;
-  top: 44px;
-}
-.nav-bar {
-  z-index: 999;
+  top: 0px;
+  /* width: 100%; */
+  min-width: 320px;
+  max-width: 640px;
 }
 .scroll{
-  position: absolute;
+  position: fixed;
   top: 44px;
-  bottom: 50px;
+  height: calc(100% - 93px);
+  width: 100%;
+  min-width: 320px;
+  max-width: 640px;
+  /* bottom: 50px;
   left: 0;
-  right: 0;
-  overflow: hidden;
+  right: 0; */
+  /* overflow: auto; */
 }
 
 </style>

@@ -5,18 +5,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    playing : {
-      state: false,
-      musicSrc: ''
+    musicPlay : {
+      url:"",
+      playing:false,
     }
-
   },
   mutations: {
-    setMusicSrc(state,payload){
-      state.playing.musicSrc = payload.url;
-      state.playing.state = payload.state;
-      console.log(state.playing)
-    }
+    setMusicPlay(state,payload){
+      state.musicPlay.playing = payload;
+      console.log("VueX中已设置为："+payload);
+
+    },
+    setMusicUrl(state,payload){
+      console.log("store中的地址已修改");
+      state.musicPlay.url = payload;
+    },
   },
   actions: {
   },

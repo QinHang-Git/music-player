@@ -29,10 +29,10 @@ export default {
 
   .nav-bar{
     display: flex;
-    position: fixed;
+    /* position: fixed;
     top:0;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%); */
     width: 100%;
     min-width: 320px;
     max-width: 640px;
@@ -40,7 +40,7 @@ export default {
 
     background-color: #c4ddf1;
 
-
+    z-index: 3;
     line-height: 44px;
     text-align: center;
     box-shadow: 0 1px 1px rgba(100,100,100,0.2);
