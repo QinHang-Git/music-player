@@ -51,12 +51,13 @@ export function getGoodsDetails(goodsId){
 
 export function getGoodsActivity(){
   return shopRequest({
-    url:"/category/get-tb-topic-list",
+    // url:"/category/get-tb-topic-list",
+    url:"/goods/topic/carouse-list",
     params:{
       appKey:'5fa0d3a407682',
       pageId:"1",
       pageSize:10,
-      version:'v1.2.0'
+      version:'v2.0.0'
     }
   })
 }

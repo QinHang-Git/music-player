@@ -41,7 +41,8 @@ export default {
     getJoke() {
       const page = this.jokeList["page"];
       getJoke(page).then((res) => {
-        this.jokeList["list"].push(...res.data.data.data);
+        console.log(res);
+        this.jokeList["list"].push(...res.data.data);
         // alert("已经加载了"+this.jokeList.page+"页，实际条数为"+ (this.jokeList.list.length))
         console.log(this.jokeList);
         this.jokeList["page"] += 1;

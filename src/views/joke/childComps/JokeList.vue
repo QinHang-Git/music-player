@@ -1,41 +1,29 @@
 <!--  -->
 <template>
   <div id="joke">
-    <div
-      v-for="item in jokeList"
-      class="joke-list"
-      @click="jokeRead(item.content)"
-    >
+    <div v-for="(item, index) in jokeList" :key="index" class="joke-list" @click="jokeRead(item.content)">
       <h4 class="joke-title">{{ item.title }}</h4>
-      <p class="joke-date">{{ item.date }}</p>
+      <p class="joke-date">{{ item.time }}</p>
     </div>
 
-    <div
-      @click="closeContent"
-      v-if="displayContent"
-      :class="displayContent ? 'joke-hide' : ''"
-    ></div>
+    <div @click="closeContent" v-if="displayContent" :class="displayContent ? 'joke-hide' : ''"></div>
 
-    <joke-read
-      :content="clickJokeItem"
-      @closeContent="closeContent"
-      :class="displayContent ? 'joke-read' : 'joke-read2'"
-    ></joke-read>
+    <joke-read :content="clickJokeItem" @closeContent="closeContent" :class="displayContent ? 'joke-read' : 'joke-read2'"></joke-read>
   </div>
 </template>
 
 <script>
-import JokeRead from "./JokeRead";
+import JokeRead from './JokeRead';
 
 export default {
-  name: "Joke",
+  name: 'Joke',
   components: {
-    JokeRead,
+    JokeRead
   },
   data: function () {
     return {
-      clickJokeItem: "",
-      displayContent: false,
+      clickJokeItem: '',
+      displayContent: false
     };
   },
   props: {
@@ -43,8 +31,8 @@ export default {
       type: Array,
       default() {
         return [];
-      },
-    },
+      }
+    }
   },
   computed: {},
   watch: {},
@@ -56,8 +44,8 @@ export default {
     },
     closeContent() {
       this.displayContent = false;
-    },
-  },
+    }
+  }
 };
 </script>
 

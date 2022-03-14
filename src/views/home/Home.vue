@@ -70,17 +70,6 @@ export default {
 
     };
   },
-  computed: {
-    scrollTop(){
-      console.log("jianting----scrollTop");
-      return this.$refs.scroll.scrollTop
-    }
-  },
-  watch: {
-    scrollTop(){
-      this.isShowBackTop = (this.$refs.scroll.scrollTop > 1000)
-    }
-  },
   methods: {
     // 事件监听方法,监听点击的tab
     tabClick(index) {
@@ -148,9 +137,8 @@ export default {
     //轮播图使用 请求的数据
     getGoodsActivity() {
       getGoodsActivity().then((res)=>{
-        console.log(res);
+        console.log(res,333333333);
         this.goodsActivity = res.data
-        console.log(this.goodsActivity);
       })
     },
   },

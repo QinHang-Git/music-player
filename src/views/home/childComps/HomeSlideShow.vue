@@ -1,22 +1,12 @@
 <template>
   <div class="banner" @mouseover="disInv" @mouseleave="runInv">
-    <v-touch
-      v-on:swipeleft="gotoPage(nextIndex)"
-      v-on:swiperight="gotoPage(prevIndex)"
-      class="item"
-    >
-      <a :href="goodsActivity[currentIndex].activityLink"
-        ><img :src="goodsActivity[currentIndex].materialLink"
-      /></a>
+    <v-touch v-on:swipeleft="gotoPage(nextIndex)" v-on:swiperight="gotoPage(prevIndex)" class="item">
+      <a href="#"><img :src="goodsActivity.length ? goodsActivity[currentIndex].topicImage : ''" /></a>
     </v-touch>
     <div class="page" v-if="goodsActivity.length > 1">
       <ul>
         <li @click="gotoPage(prevIndex)">&lt;</li>
-        <li
-          v-for="(item, index) in goodsActivity"
-          @click="gotoPage(index)"
-          :class="{ current: currentIndex == index }"
-        >
+        <li v-for="(item, index) in goodsActivity" @click="gotoPage(index)" :key="index" :class="{ current: currentIndex == index }">
           {{ index + 1 }}
         </li>
         <li @click="gotoPage(nextIndex)">&gt;</li>
@@ -27,11 +17,11 @@
 
 <script>
 export default {
-  name: "HomeSlideShow",
+  name: 'HomeSlideShow',
   data() {
     return {
       currentIndex: 0,
-      timer: null,
+      timer: null
     };
   },
   mounted() {},
@@ -40,8 +30,8 @@ export default {
       type: Array,
       default: function () {
         return {};
-      },
-    },
+      }
+    }
   },
   methods: {
     gotoPage(index) {
@@ -49,15 +39,15 @@ export default {
     },
     //定时器
     runInv() {
-      console.log("鼠标偶走了");
+      console.log('鼠标偶走了');
       this.timer = setInterval(() => {
         this.gotoPage(this.nextIndex);
       }, 3000);
     },
     disInv() {
-      console.log("鼠标来了");
+      console.log('鼠标来了');
       clearInterval(this.timer);
-    },
+    }
   },
   created() {
     this.runInv();
@@ -78,8 +68,8 @@ export default {
       } else {
         return this.currentIndex + 1;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
